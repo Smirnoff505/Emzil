@@ -1,0 +1,15 @@
+
+
+{% block content %}
+<div class="offcanvas offcanvas-start show" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+    <div class="offcanvas-header">
+        <h3 class="offcanvas-title" id="offcanvasLabel">{{ object.name }}</h3>
+    </div>
+    <div class="offcanvas-body">
+        {{ object.text_mail }}
+    </div>
+    <a href="{% url 'sandmail:list' %}" class="btn btn-primary my-2">Вернуться</a>
+    <a href="{% url 'sandmail:update' object.pk %}" class="btn btn-primary my-2">Изменить</a>
+    <a href="{% url 'sandmail:delete' object.pk %}" class="btn btn-danger">Удалить</a>
+</div>
+{% endblock %}

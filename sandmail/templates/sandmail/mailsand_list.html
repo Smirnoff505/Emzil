@@ -1,0 +1,10 @@
+{% extends 'sandmail/base.html' %}
+
+{% block content %}
+<ul class="list-group">
+    {% for object in object_list %}
+    <a href="{% url 'sandmail:detail' object.pk %}"> Наименование рассылки: {{ object.name }}, Тема письма: {{ object.name_mail }}
+    </a>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'sandmail/base.html' %}
+
+{% block content %}
+
+<main>
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Email Sander - сервис рассылки писем</h1>
+                <p class="lead text-body-secondary">Сервис предназначен для рассылки писем пользователям.</p>
+                <p>
+                    <a href="{% url 'sandmail:create' %}" class="btn btn-primary my-2">Создать новую рассылку</a>
+                    <a href="{% url 'sandmail:list' %}" class="btn btn-primary my-2">Список всех рассылок</a>
+                </p>
+            </div>
+        </div>
+    </section>
+    <div class="container px-4 text-center">
+        <div class="row gx-5">
+            <div class="col-3">
+                <div class="p-3"><h3>Всего рассылок: {{ mailsand_count }}</h3></div>
+            </div>
+            <div class="col-3">
+                <div class="p-3"><h3>Активные рассылки: {{ mailsand_count_active }}</h3></div>
+            </div>
+            <div class="col-3">
+                <div class="p-3"><h3>Завершенные рассылки: {{ mailsand_count_notactive }}</h3></div>
+            </div>
+            <div class="col-3">
+                <div class="p-3"><h3>Всего клиентов: {{ client_count }}</h3></div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Статьи интересные пользователям.</h1>
+            </div>
+            <div class="album py-5 bg-body-tertiary">
+                <div class="container">
+
+
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                        {% for object in blog_random %}
+                        <div class="col-4">
+                            <div class="card shadow-sm">
+                                {% if object.preview %}
+                                <img src="/media/{{ object.preview }}" class="card-img-top" style="width: 100%;"/>
+                                {% else %}
+                                <img src="/media/empty.jpg" class="card-img-top" style="width: 100%;"/>
+                                {% endif %}
+                                <div class="card-body">
+                                    <h3 class="card-text">{{ object.title }}</h3>
+                                    <p class="card-text">{{ object.body|truncatechars:100 }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a href="{% url 'blog:detail' object.pk %}" class="btn btn-primary">Читать</a>
+                                        </div>
+                                        <small class="text-body-secondary">{{ object.create_date }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'blog:list' %}" class="btn btn-primary my-2">Смотреть больше</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock %}
