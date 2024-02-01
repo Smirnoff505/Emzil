@@ -6,12 +6,18 @@
 
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Email Sander - сервис рассылки писем</h1>
+            <div class="col-lg-8 col-md-8 mx-auto">
+                <h1 class="fw-light">Email Sender - сервис рассылки писем</h1>
                 <p class="lead text-body-secondary">Сервис предназначен для рассылки писем пользователям.</p>
                 <p>
+                    {% if user.is_authenticated or perms.sandmail.view_mailsand  %}
                     <a href="{% url 'sandmail:create' %}" class="btn btn-primary my-2">Создать новую рассылку</a>
+
                     <a href="{% url 'sandmail:list' %}" class="btn btn-primary my-2">Список всех рассылок</a>
+
+                    <a href="{% url 'sandmail:create_client' %}" class="btn btn-primary my-2">Добавить клиента</a>
+                    <a href="{% url 'sandmail:list_client' %}" class="btn btn-primary my-2">Список клиентов</a>
+                    {% endif %}
                 </p>
             </div>
         </div>

@@ -10,10 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
+from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+dot_env = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path=dot_env)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -39,6 +44,7 @@ INSTALLED_APPS = [
 
     'sandmail',
     'blog',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'emzil',
         'USER': 'postgres',
-        'PASSWORD': 555777999,
+        'PASSWORD': os.getenv('PASSWORD_DB'),
         'HOST': '127.0.0.1',
         'PORT': 5432
     }
@@ -135,15 +141,30 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'oleg.smirnoff505@yandex.ru'  # your email
-EMAIL_HOST_PASSWORD = 'ubxzztcqocuzlocb'  # your password
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 
+AUTH_USER_MODEL = 'users.User'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/users/'
+
 CRONJOBS = [
-    ('0 0 * * *', 'sandmail.cron.send_daily',),
-    ('0 0 * * 1', 'sandmail.cron.send_weekly', ),
-    ('0 0 1 * *', 'sandmail.cron.send_monthly', ),
+    ('* * * * *', 'sandmail.cron.send_daily',),
+    ('0 * * * *', 'sandmail.cron.send_weekly',),
+    ('0 * * * *', 'sandmail.cron.send_monthly',),
 ]
+
+CACHE_ENABLED = bool(os.getenv('CACHE_ENABLED'))
+
+if CACHE_ENABLED:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': os.getenv('CACHE_LOCATION'),
+        }
+    }

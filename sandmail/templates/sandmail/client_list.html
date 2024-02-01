@@ -1,0 +1,27 @@
+{% extends 'sandmail/base.html' %}
+
+{% block content %}
+
+<div class="row 12">
+    <div class="col-6 mx-auto">
+        <ul class="list-group">
+
+            {% for object in object_list %}
+            {% if user == object.owner %}
+            <h5>Клиент: {{ object.full_name }}, Почта: {{ object.client_email }}, Владелец: {{ object.owner }}</h5>
+
+            <div class="row">
+                <div class="col-6">
+
+                    <a href="{% url 'sandmail:update_client' object.pk %}" class="btn btn-primary my-2">Изменить</a>
+                    <a href="{% url 'sandmail:delete_client' object.pk %}" class="btn btn-danger">Удалить</a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        <a href="{% url 'sandmail:home' %}" class="btn btn-primary my-2">Вернуться</a>
+    </div>
+</div>
+
+{% endblock %}

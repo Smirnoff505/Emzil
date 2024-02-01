@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
@@ -5,20 +6,22 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from blog.models import Blog
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(PermissionRequiredMixin, CreateView):
     """Создание сущности с полями:
     title: str
     body: text
     preview: img"""
     model = Blog
     fields = ('title', 'body', 'preview',)
+    permission_required = 'blog.add_blog'
     success_url = reverse_lazy('blog:list')
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(PermissionRequiredMixin, UpdateView):
     """Update существующей сущности"""
     model = Blog
     fields = ('title', 'body', 'preview',)
+    permission_required = 'blog.change_blog'
 
     def get_success_url(self):
         """Переопределен метод, для перенаправления на статью после обновления."""
@@ -43,7 +46,8 @@ class BlogDetailView(DetailView):
         return self.object
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(PermissionRequiredMixin, DeleteView):
     """Удаление объекта"""
     model = Blog
+    permission_required = 'blog.delete_blog'
     success_url = reverse_lazy('blog:list')

@@ -1,0 +1,37 @@
+{% extends 'sandmail/base.html' %}
+
+{% block content %}
+
+
+<div class="card_body">
+    <table class="table">
+        <tr>
+            <td>Название рассылки:</td>
+            <td>Ответ почтового сервера:</td>
+            <td>Статус отправки:</td>
+            <td>Дата и время последней попытки:</td>
+            <td>{{ object.mail }}</td>
+        </tr>
+        {% for object in object_list %}
+        {% if user.is_staff %}
+        <tr>
+            <td>{{ object.mail }}</td>
+            <td>{{ object.server_response }}</td>
+            <td>{{ object.status }}</td>
+            <td>{{ object.sent_at }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+    <div class="row">
+        <div class="col-6">
+            <a href="{% url 'sandmail:home' %}" class="btn btn-primary my-2">Вернуться</a>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+{% endblock %}

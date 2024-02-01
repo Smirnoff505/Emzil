@@ -1,0 +1,24 @@
+{% extends 'sandmail/base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">Подтверждение почты</div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="text" name="code" class="form-control" id="name" placeholder="Введите код"
+                               required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Подтвердить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
